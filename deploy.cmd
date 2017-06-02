@@ -76,11 +76,18 @@ IF /I "DemoFunctions.sln" NEQ "" (
 :: 2. Build to the temporary path
 ::call :ExecuteCmd "%MSBUILD_PATH%" "%DEPLOYMENT_SOURCE%\WebhookCSharpSendToSlack\WebhookCSharpSendToSlack.csproj" /nologo /verbosity:m /t:Build /p:Configuration=Release;OutputPath="%DEPLOYMENT_TEMP%\WebhookCSharpSendToSlack";UseSharedCompilation=false %SCM_BUILD_ARGS%
 echo %DEPLOYMENT_SOURCE%
-FOR /F "DELIMS=" %%A IN ("%DEPLOYMENT_SOURCE%/repository") DO (
-  set CSPROJ=%%~nxA
-  echo Building !CSPROJ!
-  call :ExecuteCmd "%MSBUILD_PATH%" "%DEPLOYMENT_SOURCE%\!CSPROJ!\!CSPROJ!.csproj" /nologo /verbosity:m /t:Build /p:Configuration=Release;OutputPath="%DEPLOYMENT_TEMP%\!CSPROJ!";UseSharedCompilation=false %SCM_BUILD_ARGS%
-  IF !ERRORLEVEL! NEQ 0 goto error
+::NOT WORK
+::FOR /F "DELIMS=" %%A IN ("%DEPLOYMENT_SOURCE%") DO (
+:: TRY GET DIRECTORY NAME BY DIR.
+FOR /F %%A IN ('dir /b "%DEPLOYMENT_SOURCE%\src" /ad') DO (
+  if /i "%%A"==".vs" (
+    echo skipping %%A
+  ) else if "%%A"=="packages" (
+    echo skipping %%A
+  ) else (
+    call :ExecuteCmd "%MSBUILD_PATH%" "%DEPLOYMENT_SOURCE%\%%A\%%A.csproj" /nologo /verbosity:m /t:Build /p:Configuration=Release;OutputPath="%DEPLOYMENT_TEMP%\%%A";UseSharedCompilation=false %SCM_BUILD_ARGS%
+    IF !ERRORLEVEL! NEQ 0 goto error
+  )
 )
 
 
