@@ -68,8 +68,8 @@ SET MSBUILD_PATH=%ProgramFiles(x86)%\MSBuild\14.0\Bin\MSBuild.exe
 echo Handling Azure Functions deployment.
 
 :: 1. Restore NuGet packages
-IF /I "DemoFunctions.sln" NEQ "" (
-  call :ExecuteCmd nuget restore "%DEPLOYMENT_SOURCE%\AzureFunctionsTest.sln"
+IF /I "src\AzureFunctionsTest.sln" NEQ "" (
+  call :ExecuteCmd nuget restore "%DEPLOYMENT_SOURCE%\src\AzureFunctionsTest.sln"
   IF !ERRORLEVEL! NEQ 0 goto error
 )
 
@@ -85,7 +85,7 @@ FOR /F %%A IN ('dir /b "%DEPLOYMENT_SOURCE%\src" /ad') DO (
   ) else if "%%A"=="packages" (
     echo skipping %%A
   ) else (
-    call :ExecuteCmd "%MSBUILD_PATH%" "%DEPLOYMENT_SOURCE%\%%A\%%A.csproj" /nologo /verbosity:m /t:Build /p:Configuration=Release;OutputPath="%DEPLOYMENT_TEMP%\%%A";UseSharedCompilation=false %SCM_BUILD_ARGS%
+    call :ExecuteCmd "%MSBUILD_PATH%" "%DEPLOYMENT_SOURCE%\src\%%A\%%A.csproj" /nologo /verbosity:m /t:Build /p:Configuration=Release;OutputPath="%DEPLOYMENT_TEMP%\%%A";UseSharedCompilation=false %SCM_BUILD_ARGS%
     IF !ERRORLEVEL! NEQ 0 goto error
   )
 )
