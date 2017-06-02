@@ -4,6 +4,7 @@
   "entryPoint": "WebhookCSharpSendToSlack.FunctionTrigger.Run",
   "bindings": [
     {
+      "webHookType": "genericJson",
       "authLevel": "function",
       "name": "req",
       "type": "httpTrigger",
