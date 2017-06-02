@@ -43,7 +43,7 @@ namespace WebhookCSharpSendToSlack
                 }));
                 return req.CreateResponse(res.StatusCode, new
                 {
-                    body = $"Send to Slack for following. text : {data.text}",
+                    body = $"Send to Slack for following. channel : {data.channel}, text : {data.text}",
                 });
             }
         }
