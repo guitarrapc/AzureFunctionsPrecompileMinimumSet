@@ -75,7 +75,7 @@ IF /I "DemoFunctions.sln" NEQ "" (
 
 :: 2. Build to the temporary path
 ::call :ExecuteCmd "%MSBUILD_PATH%" "%DEPLOYMENT_SOURCE%\WebhookCSharpSendToSlack\WebhookCSharpSendToSlack.csproj" /nologo /verbosity:m /t:Build /p:Configuration=Release;OutputPath="%DEPLOYMENT_TEMP%\WebhookCSharpSendToSlack";UseSharedCompilation=false %SCM_BUILD_ARGS%
-FOR /F "DELIMS=" %%A IN ("%DEPLOYMENT_SOURCE%") DO (
+FOR /F "DELIMS=" %%A IN ("%DEPLOYMENT_SOURCE%/repository") DO (
   set CSPROJ=%%~nxA
   echo Building !CSPROJ!
   call :ExecuteCmd "%MSBUILD_PATH%" "%DEPLOYMENT_SOURCE%\!CSPROJ!\!CSPROJ!.csproj" /nologo /verbosity:m /t:Build /p:Configuration=Release;OutputPath="%DEPLOYMENT_TEMP%\!CSPROJ!";UseSharedCompilation=false %SCM_BUILD_ARGS%
