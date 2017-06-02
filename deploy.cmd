@@ -67,9 +67,11 @@ SET MSBUILD_PATH=%ProgramFiles(x86)%\MSBuild\14.0\Bin\MSBuild.exe
 
 echo Handling Azure Functions deployment.
 
+SET SOLUTIONNAME="AzureFunctionsTest.sln"
+
 :: 1. Restore NuGet packages
-IF /I "src\AzureFunctionsTest.sln" NEQ "" (
-  call :ExecuteCmd nuget restore "%DEPLOYMENT_SOURCE%\src\AzureFunctionsTest.sln"
+IF /I "src\%SOLUTIONNAME%" NEQ "" (
+  call :ExecuteCmd nuget restore "%DEPLOYMENT_SOURCE%\src\%SOLUTIONNAME%"
   IF !ERRORLEVEL! NEQ 0 goto error
 )
 
